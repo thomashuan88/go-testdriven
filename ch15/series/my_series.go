@@ -1,5 +1,14 @@
 package series
 
+import "fmt"
+
+func init() {
+	fmt.Println("init1")
+}
+func init() {
+	fmt.Println("init2")
+}
+
 func GetFibonacci(n int) []int {
 	fibList := []int{1, 1}
 
