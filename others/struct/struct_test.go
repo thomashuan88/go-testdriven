@@ -26,3 +26,20 @@ func TestChangeName(t *testing.T) {
 	t.Log(pp)
 
 }
+
+type cc struct {
+	Id int
+}
+
+func TestPointerStruct(t *testing.T) {
+	ii := cc{Id: 44}
+	yy := cc{Id: 66}
+	changval(&ii)
+	t.Log(ii)
+	t.Logf("ii is %p, yy is %p", &ii, &yy)
+	// ii.id = 33
+}
+
+func changval(v *cc) {
+	v.Id = 55
+}
