@@ -1,4 +1,4 @@
-package return_test
+package function_test
 
 import (
 	"fmt"
