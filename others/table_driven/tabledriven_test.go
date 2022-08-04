@@ -67,3 +67,8 @@ func BenchmarkSubstr(b *testing.B) {
 	}
 
 }
+
+//  go test -bench . // benchmark
+// go test -bench . -cpuprofile cpu.out
+// apt install graphviz
+// go tool pprof cpu.out
