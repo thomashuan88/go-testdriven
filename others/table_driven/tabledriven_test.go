@@ -2,13 +2,20 @@ package table_driven
 
 import "testing"
 
+// var lastOccurred := make([]int, 0xffff) // 65535
+
 func lengthOfNonRepeatingSubStr(s string) int {
-	lastOccurred := make(map[rune]int)
+	// lastOccurred := make(map[rune]int)
+	lastOccurred := make([]int, 0xffff) // 65535
+	for i := range lastOccurred {
+		lastOccurred[i] = -1
+	}
 	start := 0
 	maxLength := 0
 
 	for i, ch := range []rune(s) {
-		if lastI, ok := lastOccurred[ch]; ok && lastI >= start {
+		// if lastI, ok := lastOccurred[ch]; ok && lastI >= start {
+		if lastI := lastOccurred[ch]; lastI != -1 && lastI >= start {
 			start = lastI + 1
 		}
 		if i-start+1 > maxLength {
@@ -33,7 +40,7 @@ func TestSubstr(t *testing.T) {
 		{"bbbbbbbb", 1},
 		{"abcabcabcd", 4},
 		// Chinense cases
-		{"这里是慕课网", 6},
+		{"we这里是慕课网", 8},
 		{"一二三二一", 3},
 		{"黑化肥挥发发灰会花飞灰化肥挥发发黑会飞花", 8},
 	}
