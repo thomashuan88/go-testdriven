@@ -32,6 +32,12 @@ func chanDemo() {
 	time.Sleep(time.Millisecond)
 }
 
+func bufferedChannel() {
+	c := make(chan int)
+	c <- 1
+}
+
 func TestChan(t *testing.T) {
-	chanDemo()
+	// chanDemo()
+	bufferedChannel()
 }
