@@ -33,6 +33,7 @@ func chanDemo() {
 	time.Sleep(time.Millisecond)
 }
 
+// channel with buffer can help improve performance
 func bufferedChannel() {
 	c := make(chan int, 3) // you can add 3 data , without hit deadlock
 	go worker(0, c)
