@@ -6,14 +6,15 @@ import (
 	"time"
 )
 
+func worker(id int, c chan int) {
+	for {
+		fmt.Printf("worker %d received %d\n", id, <-c)
+	}
+}
+
 func createWorker(id int) chan<- int {
 	c := make(chan int)
-	go func() {
-		for {
-			fmt.Printf("worker %d received %d\n", id, <-c)
-		}
-	}()
-
+	go worker(id, c)
 	return c
 }
 
@@ -34,9 +35,11 @@ func chanDemo() {
 
 func bufferedChannel() {
 	c := make(chan int, 3) // you can add 3 data , without hit deadlock
+	go worker(0, c)
 	c <- 1
 	c <- 2
 	c <- 3
+	time.Sleep(time.Millisecond)
 }
 
 func TestChan(t *testing.T) {
