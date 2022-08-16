@@ -33,8 +33,10 @@ func chanDemo() {
 }
 
 func bufferedChannel() {
-	c := make(chan int)
+	c := make(chan int, 3) // you can add 3 data , without hit deadlock
 	c <- 1
+	c <- 2
+	c <- 3
 }
 
 func TestChan(t *testing.T) {
