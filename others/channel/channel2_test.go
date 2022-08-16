@@ -13,11 +13,18 @@ func worker(id int, c chan int) {
 }
 
 func chanDemo() {
-	c := make(chan int)
+	var channels [10]chan int
+	for i := 0; i < 10; i++ {
+		channels[i] = make(chan int)
+		go worker(i, channels[i])
+	}
 
-	go worker(0, c)
-	c <- 1
-	c <- 2
+	for i := 0; i < 10; i++ {
+		channels[i] <- 'a' + i
+	}
+	for i := 0; i < 10; i++ {
+		channels[i] <- 'A' + i
+	}
 	time.Sleep(time.Millisecond)
 }
 
