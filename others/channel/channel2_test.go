@@ -8,7 +8,11 @@ import (
 
 func worker(id int, c chan int) {
 	for {
-		fmt.Printf("worker %d received %d\n", id, <-c)
+		d, more := <-c
+		if !more {
+			return
+		}
+		fmt.Printf("worker %d received %c\n", id, d)
 	}
 }
 
@@ -37,13 +41,27 @@ func chanDemo() {
 func bufferedChannel() {
 	c := make(chan int, 3) // you can add 3 data , without hit deadlock
 	go worker(0, c)
-	c <- 1
-	c <- 2
-	c <- 3
+	c <- 'a'
+	c <- 'b'
+	c <- 'c'
+	c <- 'd'
+	time.Sleep(time.Millisecond)
+}
+
+// indicate the channel already finish
+func channelClose() {
+	c := make(chan int, 3) // you can add 3 data , without hit deadlock
+	go worker(0, c)
+	c <- 'a'
+	c <- 'b'
+	c <- 'c'
+	c <- 'd'
+	// close(c)
 	time.Sleep(time.Millisecond)
 }
 
 func TestChan(t *testing.T) {
 	// chanDemo()
-	bufferedChannel()
+	// bufferedChannel()
+	channelClose()
 }
