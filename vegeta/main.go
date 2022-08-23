@@ -4,15 +4,16 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"time"
 
 	vegeta "github.com/tsenart/vegeta/v12/lib"
 )
 
 func Run() {
-	rate := vegeta.Rate{Freq: 5, Per: time.Second}
+	rate := vegeta.Rate{Freq: 1, Per: time.Second}
 	duration := 4 * time.Second
-	targeter := NewCustomTargeter5()
+	targeter := NewCustomTargeter7()
 
 	attacker := vegeta.NewAttacker()
 	var metrics vegeta.Metrics
@@ -20,10 +21,13 @@ func Run() {
 	for res := range attacker.Attack(targeter, rate, duration, "Big Bang!") {
 		metrics.Add(res)
 		fmt.Println(string(res.Body))
-		fmt.Println(count)
+		// fmt.Println(count)
 		count++
 	}
 	metrics.Close()
+
+	reporter := vegeta.NewTextReporter(&metrics)
+	reporter(os.Stdout)
 
 	fmt.Printf("99th percentile: %s\n", metrics.Latencies.P99)
 
@@ -172,6 +176,31 @@ func NewCustomTargeter6() vegeta.Targeter {
 		var jsonStr = []byte(`{"username": "testken1"}`)
 
 		tgt.Body = jsonStr
+		return nil
+	}
+}
+
+func NewCustomTargeter7() vegeta.Targeter {
+	return func(tgt *vegeta.Target) error {
+		if tgt == nil {
+			return vegeta.ErrNilTarget
+		}
+
+		token := "32e4514f6cd25a9f388208a7d35d0fdb"
+
+		header := http.Header{}
+		header.Add("Content-Type", "application/json")
+		header.Add("Accept", "application/json")
+		tgt.Header = header
+
+		tgt.Method = "POST"
+
+		tgt.URL = "https://stage.duit99.club/api/JILI/cancelBet"
+
+		var jsonStr = []byte(`{"reqId":"f8566411-2276-40cf-9e12-4edd0f70a4f3","token":"` + token + `","currency":"VND","game":10,"round":1660550052000061010,"betAmount":2000,"winloseAmount":400,"userId":"N88cremember02"}`)
+
+		tgt.Body = jsonStr
+
 		return nil
 	}
 }
