@@ -11,16 +11,16 @@ import (
 )
 
 func Run() {
-	rate := vegeta.Rate{Freq: 1, Per: time.Second}
+	rate := vegeta.Rate{Freq: 1200, Per: time.Second}
 	duration := 4 * time.Second
-	targeter := NewCustomTargeter7()
+	targeter := NewCustomTargeter8()
 
 	attacker := vegeta.NewAttacker()
 	var metrics vegeta.Metrics
 	count := 0
 	for res := range attacker.Attack(targeter, rate, duration, "Big Bang!") {
 		metrics.Add(res)
-		fmt.Println(string(res.Body))
+		//fmt.Println(string(res.Body))
 		// fmt.Println(count)
 		count++
 	}
@@ -132,7 +132,7 @@ func NewCustomTargeter5() vegeta.Targeter {
 
 		tgt.Method = "POST"
 
-		tgt.URL = "http://nv88-gbo-stage.n88club.local/api/gridz/player/queryBalance/new"
+		tgt.URL = "https://gamebo-next.gball8.com/api/gridz/player/queryBalance/new"
 
 		// var jsonStr = []byte(`{"api_key": "uC26PnoP1BiRQQHWHZK7wUTUYPjKlXBj", "product": "n88club", "player_name": "crkevinp1", "player_id": "30178", "currency": "VND",  "agent_username": "kevinagt1","member_type": "CREDIT", "platform_code": "ADVP",  "isLocal": "true" }`)
 
@@ -186,7 +186,7 @@ func NewCustomTargeter7() vegeta.Targeter {
 			return vegeta.ErrNilTarget
 		}
 
-		token := "32e4514f6cd25a9f388208a7d35d0fdb"
+		token := "c401dd8f9818f1edf43672c2cdb98e68"
 
 		header := http.Header{}
 		header.Add("Content-Type", "application/json")
@@ -195,12 +195,40 @@ func NewCustomTargeter7() vegeta.Targeter {
 
 		tgt.Method = "POST"
 
-		tgt.URL = "https://stage.duit99.club/api/JILI/cancelBet"
+		tgt.URL = "https://gamebo-next.gball8.com/api/JILI/cancelBet"
 
 		var jsonStr = []byte(`{"reqId":"f8566411-2276-40cf-9e12-4edd0f70a4f3","token":"` + token + `","currency":"VND","game":10,"round":1660550052000061010,"betAmount":2000,"winloseAmount":400,"userId":"N88cremember02"}`)
 
 		tgt.Body = jsonStr
 
 		return nil
+	}
+}
+
+func NewCustomTargeter8() vegeta.Targeter {
+	return func(tgt *vegeta.Target) error {
+		if tgt == nil {
+			return vegeta.ErrNilTarget
+		}
+
+		header := http.Header{}
+		header.Set("api_key", "zl9oo0vtrtbih1fufvq8pk8stvqprad8")
+		header.Set("Content-Type", "application/json")
+		// header.Set("accept", "application/x-www-form-urlencoded")
+		tgt.Header = header
+
+		tgt.Method = "POST"
+
+		tgt.URL = "http://seamless.n88club.local/api/NESP/balance?authToken=ebe4448e95480931a82a16b5f1ecc73d"
+
+		// var jsonStr = []byte(`{"api_key": "uC26PnoP1BiRQQHWHZK7wUTUYPjKlXBj", "product": "n88club", "player_name": "crkevinp1", "player_id": "30178", "currency": "VND",  "agent_username": "kevinagt1","member_type": "CREDIT", "platform_code": "ADVP",  "isLocal": "true" }`)
+
+		// tgt.Body = jsonStr
+
+		jsonStr := []byte(`{"sid":"9755cb02fcc0530f904ccd308087833c","userId":"N88TECHTEST22","game":{"type":"slots","details":{"table":{"id":null,"vid":null}}},"currency":"VND","uuid":"b4b5baaa-c9fb-42dc-b975-7f2640e1d483"}`)
+
+		tgt.Body = jsonStr
+		return nil
+
 	}
 }
