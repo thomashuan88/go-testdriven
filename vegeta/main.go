@@ -12,7 +12,7 @@ import (
 
 func Run() {
 	rate := vegeta.Rate{Freq: 1200, Per: time.Second}
-	duration := 4 * time.Second
+	duration := 6 * time.Second
 	targeter := NewCustomTargeter8()
 
 	attacker := vegeta.NewAttacker()
