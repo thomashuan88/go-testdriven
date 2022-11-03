@@ -5,11 +5,15 @@ import (
 	"time"
 )
 
-func worker(id int, c chan int) {
-	for {
-		// n := <-c
-		fmt.Printf("Worker %d received %c\n", id, <-c)
-	}
+func createWorker(id int) chan int {
+
+	c := make(chan int)
+	go func() {
+		for {
+			fmt.Printf("Worker %d received %c\n", id, <-c)
+		}
+	}()
+	return c
 }
 
 // goroutines deadlock example
@@ -17,15 +21,8 @@ func worker(id int, c chan int) {
 func chanDemo() {
 	var channels [10]chan int
 	for i := 0; i < 10; i++ {
-		channels[i] = make(chan int)
-		go worker(i, channels[i])
+		channels[i] = createWorker(i)
 	}
-	// var c chan int // c == nil, cannot use
-	// c := make(chan int)
-
-	// go worker(0, c)
-	// c <- 1 // send to channel
-	// c <- 2
 
 	for i := 0; i < 10; i++ {
 		channels[i] <- 'a' + i

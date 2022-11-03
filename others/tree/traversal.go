@@ -28,3 +28,14 @@ func (n *Node) TraverseFunc(f func(*Node)) {
 	f(n)
 	n.Right.TraverseFunc(f)
 }
+
+func (node *Node) TraverseWithChannel() chan *Node {
+	out := make(chan *Node)
+	go func() {
+		node.TraverseFunc(func(node *Node) {
+			out <- node
+		})
+		close(out)
+	}()
+	return out
+}
