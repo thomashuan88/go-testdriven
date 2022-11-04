@@ -38,7 +38,7 @@ func main() {
 	var worker = createWorker(0)
 
 	var values []int
-	tm := time.After(10 * time.Second)
+	tm := time.After(10 * time.Second) // time out whole process
 	for {
 		var activeWorker chan<- int // nil value
 		var activeValue int
@@ -54,6 +54,8 @@ func main() {
 			values = append(values, n)
 		case activeWorker <- activeValue:
 			values = values[1:]
+		case <-time.After(800 * time.Millisecond):
+			fmt.Println("timeout") // timeout for each select
 		case <-tm:
 			fmt.Println(values)
 			fmt.Println("bye!")
