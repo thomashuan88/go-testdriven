@@ -31,22 +31,25 @@ func createWorker(id int) chan<- int {
 	return c
 }
 
-// use hasValue to detect have send value
+// nil channel pass through the select
 func main() {
 	var c1, c2 = generator(), generator()
-	w := createWorker(0)
+	var worker = createWorker(0)
+
 	n := 0
 	hasValue := false
 	for {
+		var activeWorker chan<- int // nil value
+		if hasValue {
+			activeWorker = worker
+		}
 		select {
 		case n = <-c1:
 			hasValue = true
 		case n = <-c2:
 			hasValue = true
-		case w <- n:
-			if hasValue {
-				// send to w, but code cannot be like this
-			}
+		case activeWorker <- n:
+			hasValue = false
 		}
 	}
 
