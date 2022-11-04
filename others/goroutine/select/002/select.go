@@ -31,16 +31,22 @@ func createWorker(id int) chan<- int {
 	return c
 }
 
-// like this n := 0 in for loop, like that n send to w, then all is 0
+// use hasValue to detect have send value
 func main() {
 	var c1, c2 = generator(), generator()
 	w := createWorker(0)
+	n := 0
+	hasValue := false
 	for {
-		n := 0
 		select {
 		case n = <-c1:
+			hasValue = true
 		case n = <-c2:
+			hasValue = true
 		case w <- n:
+			if hasValue {
+				// send to w, but code cannot be like this
+			}
 		}
 	}
 
