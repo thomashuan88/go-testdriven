@@ -31,16 +31,15 @@ func createWorker(id int) chan<- int {
 	return c
 }
 
-// will block after chand send and then do w <- n, no so good
+// like this can send and receive in select, but still need to handle n
 func main() {
 	var c1, c2 = generator(), generator()
 	w := createWorker(0)
 	for {
 		select {
 		case n := <-c1:
-			w <- n
 		case n := <-c2:
-			w <- n
+		case w <- n:
 		}
 	}
 
