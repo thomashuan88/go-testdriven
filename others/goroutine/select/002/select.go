@@ -21,6 +21,7 @@ func generator() chan int {
 
 func worker(id int, c chan int) {
 	for n := range c {
+		time.Sleep(4 * time.Second) // like this some value not print out
 		fmt.Printf("worker %d received %d\n", id, n)
 	}
 }
@@ -31,7 +32,6 @@ func createWorker(id int) chan<- int {
 	return c
 }
 
-// nil channel pass through the select
 func main() {
 	var c1, c2 = generator(), generator()
 	var worker = createWorker(0)
