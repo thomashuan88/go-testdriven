@@ -13,12 +13,16 @@ type atomicInt struct {
 
 func (a *atomicInt) increment() {
 	a.lock.Lock()
+	defer a.lock.Unlock()
+
 	a.value++
-	a.lock.Unlock()
+
 }
 
 func (a *atomicInt) get() int {
-	return int(*a)
+	a.lock.Lock()
+	defer a.lock.Unlock()
+	return a.value
 }
 
 func main() {
@@ -28,5 +32,5 @@ func main() {
 		a.increment()
 	}()
 	time.Sleep(time.Millisecond)
-	fmt.Println(a)
+	fmt.Println(a.get())
 }
