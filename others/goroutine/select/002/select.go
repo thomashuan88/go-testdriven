@@ -32,24 +32,27 @@ func createWorker(id int) chan<- int {
 	return c
 }
 
+// use slice to queue value
 func main() {
 	var c1, c2 = generator(), generator()
 	var worker = createWorker(0)
 
-	n := 0
-	hasValue := false
+	var values []int
 	for {
 		var activeWorker chan<- int // nil value
-		if hasValue {
+		var activeValue int
+		if len(values) > 0 {
 			activeWorker = worker
+			activeValue = values[0]
 		}
+
 		select {
-		case n = <-c1:
-			hasValue = true
-		case n = <-c2:
-			hasValue = true
-		case activeWorker <- n:
-			hasValue = false
+		case n := <-c1:
+			values = append(values, n)
+		case n := <-c2:
+			values = append(values, n)
+		case activeWorker <- activeValue:
+			values = values[1:]
 		}
 	}
 
