@@ -2,13 +2,19 @@ package main
 
 import (
 	"fmt"
+	"sync"
 	"time"
 )
 
-type atomicInt int
+type atomicInt struct {
+	value int
+	lock  sync.Mutex
+}
 
 func (a *atomicInt) increment() {
-	*a++
+	a.lock.Lock()
+	a.value++
+	a.lock.Unlock()
 }
 
 func (a *atomicInt) get() int {
