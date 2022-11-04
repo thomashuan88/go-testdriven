@@ -31,14 +31,15 @@ func createWorker(id int) chan<- int {
 	return c
 }
 
-// like this can send and receive in select, but still need to handle n
+// like this n := 0 in for loop, like that n send to w, then all is 0
 func main() {
 	var c1, c2 = generator(), generator()
 	w := createWorker(0)
 	for {
+		n := 0
 		select {
-		case n := <-c1:
-		case n := <-c2:
+		case n = <-c1:
+		case n = <-c2:
 		case w <- n:
 		}
 	}
