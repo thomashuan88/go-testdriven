@@ -39,12 +39,11 @@ func fanIn(c1, c2 chan string) chan string {
 func fanIns(chs ...chan string) chan string {
 	c := make(chan string)
 	for _, ch := range chs {
-		chCopy := ch
-		go func() {
+		go func(in chan string) {
 			for {
-				c <- <-chCopy
+				c <- <-in
 			}
-		}()
+		}(ch)
 	}
 	return c
 }
