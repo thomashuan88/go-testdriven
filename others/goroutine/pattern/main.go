@@ -72,16 +72,23 @@ func nonBlockingWait(c chan string) (string, bool) {
 	}
 }
 
+func timeoutWait(c chan string, timeout time.Duration) (string, bool) {
+	select {
+	case m := <-c:
+		return m, true
+	case <-time.After(timeout):
+		return "", false
+	}
+}
+
 func main() {
 	m1 := msgGen("service1") // similar like handle
-	m2 := msgGen("service2")
 
 	for {
-		fmt.Println(<-m1)
-		if m, ok := nonBlockingWait(m2); ok {
+		if m, ok := timeoutWait(m1, 1*time.Second); ok {
 			fmt.Println(m)
 		} else {
-			fmt.Println("no message from service2")
+			fmt.Println("timeout")
 		}
 	}
 }
