@@ -8,7 +8,7 @@ import (
 
 // message generator
 // <-chan make sure channel just can receive
-func msgGen() <-chan string {
+func msgGen() chan string {
 	c := make(chan string)
 	go func() {
 		i := 0
@@ -22,9 +22,10 @@ func msgGen() <-chan string {
 }
 
 func main() {
-	m := msgGen()
+	m1 := msgGen() // similar like handle
+	m2 := msgGen()
 	for {
-		fmt.Println(<-m)
-		m <- "abc" // like this cannot, caused by <-chan
+		fmt.Println(<-m1)
+		fmt.Println(<-m2)
 	}
 }
