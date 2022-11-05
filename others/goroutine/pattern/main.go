@@ -66,7 +66,8 @@ func fanInBySelect(c1, c2 chan string) chan string {
 func main() {
 	m1 := msgGen("service1") // similar like handle
 	m2 := msgGen("service2")
-	m := fanIns(m1, m2) // who fast receive who
+	m3 := msgGen("service3")
+	m := fanIns(m1, m2, m3) // who fast receive who
 	for {
 		fmt.Println(<-m)
 	}
