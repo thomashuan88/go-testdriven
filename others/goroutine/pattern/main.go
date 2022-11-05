@@ -21,11 +21,19 @@ func msgGen(name string) chan string {
 	return c
 }
 
+func fanIn(c1, c2 chan string) chan string {
+	c := make(chan string)
+	go func() {
+
+	}()
+	return c
+}
+
 func main() {
 	m1 := msgGen("service1") // similar like handle
 	m2 := msgGen("service2")
+	m := fanIn(m1, m2) // who fast receive who
 	for {
-		fmt.Println(<-m1)
-		fmt.Println(<-m2)
+		fmt.Println(<-m)
 	}
 }
