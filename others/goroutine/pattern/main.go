@@ -36,6 +36,19 @@ func fanIn(c1, c2 chan string) chan string {
 	return c
 }
 
+func fanIns(chs ...chan string) chan string {
+	c := make(chan string)
+	for _, ch := range chs {
+		chCopy := ch
+		go func() {
+			for {
+				c <- <-chCopy
+			}
+		}()
+	}
+	return c
+}
+
 func fanInBySelect(c1, c2 chan string) chan string {
 	c := make(chan string)
 	go func() {
@@ -54,7 +67,7 @@ func fanInBySelect(c1, c2 chan string) chan string {
 func main() {
 	m1 := msgGen("service1") // similar like handle
 	m2 := msgGen("service2")
-	m := fanIn(m1, m2) // who fast receive who
+	m := fanIns(m1, m2) // who fast receive who
 	for {
 		fmt.Println(<-m)
 	}
