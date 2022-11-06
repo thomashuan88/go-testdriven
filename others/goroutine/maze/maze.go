@@ -26,6 +26,25 @@ func readMaze(filename string) [][]int {
 	return maze
 }
 
+type point struct {
+	i, j int
+}
+
+var dirs = [4]point{
+	{-1, 0}, {0, -1}, {1, 0}, {0, 1}}
+
+func walk(maze [][]int, start, end point) {
+	steps := make([][]int, len(maze))
+	for i := range steps {
+		steps[i] = make([]int, len(maze[i]))
+	}
+	Q := []point{start}
+
+	for len(Q) > 0 {
+
+	}
+}
+
 func main() {
 	maze := readMaze("maze/maze.in")
 
@@ -35,4 +54,6 @@ func main() {
 		}
 		fmt.Println(" ")
 	}
+
+	walk(maze, point{0, 0}, point{len(maze) - 1, len(maze[0]) - 1})
 }
