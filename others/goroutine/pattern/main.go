@@ -19,6 +19,9 @@ func msgGen(name string, done chan struct{}) chan string {
 				c <- fmt.Sprintf("service %s: message %d", name, i)
 			case <-done:
 				fmt.Println("cleaning up")
+				time.Sleep(2 * time.Second) // let said use 2 second to cleaning up
+				fmt.Println("cleanup done")
+				done <- struct{}{}
 				return
 			}
 
@@ -92,11 +95,6 @@ func main() {
 	done := make(chan struct{})
 	m1 := msgGen("service1", done) // similar like handle
 
-	go func() {
-		time.Sleep(2 * time.Second)
-		done <- struct{}{}
-	}()
-
 	for i := 0; i < 5; i++ {
 		if m, ok := timeoutWait(m1, time.Second); ok {
 			fmt.Println(m)
@@ -104,5 +102,8 @@ func main() {
 			fmt.Println("timeout")
 		}
 	}
+
+	done <- struct{}{}
+	<-done
 
 }
