@@ -8,13 +8,20 @@ import (
 
 // message generator
 // <-chan make sure channel just can receive
-func msgGen(name string) chan string {
+// chan bool or chan struct{} struct save more space
+func msgGen(name string, done chan struct{}) chan string {
 	c := make(chan string)
 	go func() {
 		i := 0
 		for {
-			time.Sleep(time.Duration(rand.Intn(2000)) * time.Millisecond)
-			c <- fmt.Sprintf("service %s: message %d", name, i)
+			select {
+			case <-time.After(time.Duration(rand.Intn(2000)) * time.Millisecond):
+				c <- fmt.Sprintf("service %s: message %d", name, i)
+			case <-done:
+				fmt.Println("cleaning up")
+				return
+			}
+
 			i++
 		}
 	}()
@@ -82,13 +89,20 @@ func timeoutWait(c chan string, timeout time.Duration) (string, bool) {
 }
 
 func main() {
-	m1 := msgGen("service1") // similar like handle
+	done := make(chan struct{})
+	m1 := msgGen("service1", done) // similar like handle
 
-	for {
-		if m, ok := timeoutWait(m1, 1*time.Second); ok {
+	go func() {
+		time.Sleep(2 * time.Second)
+		done <- struct{}{}
+	}()
+
+	for i := 0; i < 5; i++ {
+		if m, ok := timeoutWait(m1, time.Second); ok {
 			fmt.Println(m)
 		} else {
 			fmt.Println("timeout")
 		}
 	}
+
 }
