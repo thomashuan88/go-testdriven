@@ -5,11 +5,17 @@ import (
 	"fmt"
 )
 
+type OrderItem struct {
+	ID    string  `json:"id"`
+	Name  string  `json:"name"`
+	Price float64 `json:"price"`
+}
+
 type Order struct {
-	ID         string  `json:"id"`
-	Name       string  `json:"name,omitempty"`
-	Quantity   int     `json:"quantity"`
-	TotalPrice float64 `json:"total_price"`
+	ID         string     `json:"id"`
+	Item       *OrderItem `json:"item"`
+	Quantity   int        `json:"quantity"`
+	TotalPrice float64    `json:"total_price"`
 }
 
 func main() {
@@ -17,6 +23,11 @@ func main() {
 		ID:         "1234",
 		Quantity:   3,
 		TotalPrice: 30,
+		Item: &OrderItem{
+			ID:    "item_1",
+			Name:  "learn go",
+			Price: 15,
+		},
 	}
 
 	b, err := json.Marshal(o)
