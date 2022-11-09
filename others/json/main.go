@@ -17,5 +17,5 @@ func main() {
 		TotalPrice: 30,
 	}
 
-	fmt.Printf("%v\n", o)
+	fmt.Printf("%+v\n", o)
 }
