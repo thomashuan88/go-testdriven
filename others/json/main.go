@@ -12,16 +12,26 @@ type OrderItem struct {
 }
 
 type Order struct {
-	ID         string       `json:"id"`
-	Items      []*OrderItem `json:"items"`
-	TotalPrice float64      `json:"total_price"`
+	ID         string      `json:"id"`
+	Items      []OrderItem `json:"items"`
+	TotalPrice float64     `json:"total_price"`
 }
 
-func main() {
+func unmarshal() {
+	s := `{"id":"1234","items":[{"id":"item_1","name":"learn go","price":15},{"id":"item_2","name":"interview","price":10}],"total_price":30}`
+	var o Order
+	err := json.Unmarshal([]byte(s), &o)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", o)
+}
+
+func marshal() {
 	o := Order{
 		ID:         "1234",
 		TotalPrice: 30,
-		Items: []*OrderItem{
+		Items: []OrderItem{
 			{
 				ID:    "item_1",
 				Name:  "learn go",
@@ -40,4 +50,8 @@ func main() {
 		panic(err)
 	}
 	fmt.Printf("%s\n", b)
+}
+
+func main() {
+	unmarshal()
 }
