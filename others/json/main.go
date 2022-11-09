@@ -12,18 +12,16 @@ type OrderItem struct {
 }
 
 type Order struct {
-	ID         string      `json:"id"`
-	Items      []OrderItem `json:"items"`
-	Quantity   int         `json:"quantity"`
-	TotalPrice float64     `json:"total_price"`
+	ID         string       `json:"id"`
+	Items      []*OrderItem `json:"items"`
+	TotalPrice float64      `json:"total_price"`
 }
 
 func main() {
 	o := Order{
 		ID:         "1234",
-		Quantity:   3,
 		TotalPrice: 30,
-		Items: []OrderItem{
+		Items: []*OrderItem{
 			{
 				ID:    "item_1",
 				Name:  "learn go",
