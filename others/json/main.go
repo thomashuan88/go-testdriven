@@ -1,12 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type Order struct {
-	ID         string
-	Name       string
-	Quantity   int
-	TotalPrice float64
+	ID         string  `json:"id"`
+	Name       string  `json:"name"`
+	Quantity   int     `json:"quantity"`
+	TotalPrice float64 `json:"total_price"`
 }
 
 func main() {
@@ -17,5 +20,9 @@ func main() {
 		TotalPrice: 30,
 	}
 
-	fmt.Printf("%+v\n", o)
+	b, err := json.Marshal(o)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%s\n", b)
 }
