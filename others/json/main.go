@@ -52,6 +52,38 @@ func marshal() {
 	fmt.Printf("%s\n", b)
 }
 
+func parseNLP() {
+	res := `{
+"data": [
+    {
+        "synonym":"",
+        "weight":"0.6",
+        "word": "真丝",
+        "tag":"材质"
+    },
+    {
+        "synonym":"",
+        "weight":"0.8",
+        "word": "韩都衣舍",
+        "tag":"品牌"
+    },
+    {
+        "synonym":"连身裙;联衣裙",
+        "weight":"1.0",
+        "word": "连衣裙",
+        "tag":"品类"
+    }
+]
+}`
+	m := make(map[string]interface{})
+	err := json.Unmarshal([]byte(res), &m)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("%+v\n", m)
+}
+
 func main() {
-	unmarshal()
+	parseNLP()
 }
