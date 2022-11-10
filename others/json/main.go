@@ -75,7 +75,11 @@ func parseNLP() {
     }
 ]
 }`
-	m := make(map[string]interface{})
+	m := struct {
+		Data []struct {
+			Synonym string `json:"synonym`
+		} `json:"data"`
+	}{}
 	err := json.Unmarshal([]byte(res), &m)
 	if err != nil {
 		panic(err)
@@ -84,7 +88,7 @@ func parseNLP() {
 	// fmt.Printf("%+v\n", m)
 
 	// Type assertion
-	fmt.Printf("%+v\n", m["data"].([]interface{})[2].(map[string]interface{})["synonym"])
+	fmt.Printf("%+v\n", m.Data[2].Synonym)
 }
 
 func main() {
