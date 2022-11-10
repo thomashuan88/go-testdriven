@@ -81,7 +81,10 @@ func parseNLP() {
 		panic(err)
 	}
 
-	fmt.Printf("%+v\n", m)
+	// fmt.Printf("%+v\n", m)
+
+	// Type assertion
+	fmt.Printf("%+v\n", m["data"].([]interface{})[2])
 }
 
 func main() {
