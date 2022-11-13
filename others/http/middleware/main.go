@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -13,10 +15,12 @@ func main() {
 	}
 
 	r.Use(func(c *gin.Context) {
-		// log latency, response code
+		// log latency, response code, log latency
+		s := time.Now()
 		c.Next()
 		logger.Info("Incoming request", zap.String("path", c.Request.URL.Path),
-			zap.Int("status", c.Writer.Status()))
+			zap.Int("status", c.Writer.Status()),
+			zap.Duration("elapsed", time.Now().Sub(s)))
 
 	})
 
