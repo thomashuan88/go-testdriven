@@ -14,8 +14,10 @@ func main() {
 
 	r.Use(func(c *gin.Context) {
 		// log latency, response code
-		logger.Info("Incoming request", zap.String("path", c.Request.URL.Path))
 		c.Next()
+		logger.Info("Incoming request", zap.String("path", c.Request.URL.Path),
+			zap.Int("status", c.Writer.Status()))
+
 	})
 
 	r.GET("/ping", func(c *gin.Context) {
