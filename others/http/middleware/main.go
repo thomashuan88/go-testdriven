@@ -8,6 +8,8 @@ import (
 	"go.uber.org/zap"
 )
 
+const keyRequestId = "requestId"
+
 func main() {
 	r := gin.Default()
 	logger, err := zap.NewProduction()
@@ -24,7 +26,7 @@ func main() {
 			zap.Duration("elapsed", time.Now().Sub(s)))
 
 	}, func(c *gin.Context) {
-		c.Set("requestId", rand.Int())
+		c.Set(keyRequestId, rand.Int())
 		c.Next()
 	})
 
