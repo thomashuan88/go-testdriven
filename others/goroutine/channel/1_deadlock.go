@@ -1,4 +1,4 @@
-package main
+package channel
 
 import "fmt"
 
@@ -11,8 +11,4 @@ func chanDemo() {
 	c <- 2
 	n := <-c // get from channel
 	fmt.Println(n)
-}
-
-func main() {
-	chanDemo()
 }

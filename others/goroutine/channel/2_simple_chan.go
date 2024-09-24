@@ -1,11 +1,11 @@
-package main
+package channel
 
 import (
 	"fmt"
 	"time"
 )
 
-func worker(id int, c chan int) {
+func worker02(id int, c chan int) {
 	for {
 		// n := <-c
 		fmt.Printf("Worker %d received %c\n", id, <-c)
@@ -14,11 +14,11 @@ func worker(id int, c chan int) {
 
 // goroutines deadlock example
 
-func chanDemo() {
+func simpleChan() {
 	var channels [10]chan int
 	for i := 0; i < 10; i++ {
 		channels[i] = make(chan int)
-		go worker(i, channels[i])
+		go worker02(i, channels[i])
 	}
 	// var c chan int // c == nil, cannot use
 	// c := make(chan int)
@@ -35,8 +35,4 @@ func chanDemo() {
 	}
 	time.Sleep(time.Millisecond) // give time to print 2
 
-}
-
-func main() {
-	chanDemo()
 }

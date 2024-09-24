@@ -1,11 +1,11 @@
-package main
+package channel
 
 import (
 	"fmt"
 	"sync"
 )
 
-func doWork(id int, c chan int, wg *sync.WaitGroup) {
+func doWork10(id int, c chan int, wg *sync.WaitGroup) {
 	// for {
 	// 	d, more := <-c
 	// 	if !more {
@@ -20,26 +20,26 @@ func doWork(id int, c chan int, wg *sync.WaitGroup) {
 	}
 }
 
-type worker struct {
+type worker10 struct {
 	in chan int
 	wg *sync.WaitGroup
 }
 
-func createWorker(id int, wg *sync.WaitGroup) worker {
-	w := worker{
+func createWorker10(id int, wg *sync.WaitGroup) worker10 {
+	w := worker10{
 		in: make(chan int),
 		wg: wg,
 	}
-	go doWork(id, w.in, wg)
+	go doWork10(id, w.in, wg)
 	return w
 }
 
-func chanDemo() {
-	var workers [10]worker
+func chanDemo10() {
+	var workers [10]worker10
 	var wg sync.WaitGroup
 
 	for i := 0; i < 10; i++ {
-		workers[i] = createWorker(i, &wg)
+		workers[i] = createWorker10(i, &wg)
 	}
 
 	wg.Add(20)
@@ -51,10 +51,5 @@ func chanDemo() {
 		worker.in <- 'A' + i
 	}
 	wg.Wait()
-
-}
-
-func main() {
-	chanDemo()
 
 }
