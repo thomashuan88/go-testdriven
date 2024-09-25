@@ -36,12 +36,22 @@ func TestGetIp(t *testing.T) {
 
 	t1 := time.Now()
 
+	ctx, cancel := context.WithCancel(context.Background())
+
 	wait.Add(1)
 	go func() {
-		ip, err := GetIp(context.Background())
+		ip, err := GetIp(ctx)
 		fmt.Println(ip, err)
 		wait.Done()
 	}()
+
+	go func() {
+		time.Sleep(2 * time.Second)
+
+		// cancel routine
+		cancel()
+	}()
+
 	wait.Wait()
 	fmt.Println("finished - ", time.Since(t1))
 }
