@@ -10,7 +10,7 @@ import (
 func TestGetUser(t *testing.T) {
 	// Create a test context
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, "name", "thomas")
+	ctx = context.WithValue(ctx, "name", UserInfo{Name: "John"})
 
 	// Call the GetUser function
 	// Assuming it returns a user or an error
