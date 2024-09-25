@@ -3,12 +3,9 @@ package context
 import (
 	"context"
 	"fmt"
-	"sync"
 	"testing"
 	"time"
 )
-
-var wait = sync.WaitGroup{}
 
 func TestGetIp(t *testing.T) {
 	// t.Run("success", func(t *testing.T) {
@@ -42,7 +39,6 @@ func TestGetIp(t *testing.T) {
 	go func() {
 		ip, err := GetIp(ctx)
 		fmt.Println(ip, err)
-		wait.Done()
 	}()
 
 	go func() {
