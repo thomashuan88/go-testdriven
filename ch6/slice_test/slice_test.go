@@ -1,6 +1,7 @@
 package slice_test
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -47,4 +48,50 @@ func TestSliceComparing(t *testing.T) {
 	// if a == b {
 	// 	t.Log("equal")
 	// }
+}
+
+func TestAppendSlice(t *testing.T) {
+	arr := make([]int, 0)
+	for i := 0; i < 20; i++ {
+		if len(arr) > 0 {
+			fmt.Printf("len : %d, cap : %d, location : %p\n", len(arr), cap(arr), &arr[0])
+		} else {
+			fmt.Printf("len : %d, cap : %d, location : (empty)\n", len(arr), cap(arr))
+		}
+		arr = append(arr, i)
+	}
+
+}
+
+// a func pass in channel and print value
+
+// test print a string with two goroutines
+func TestPrintString(t *testing.T) {
+	// a int channel
+	// ch := make(chan int)
+
+	// create a array random 30 numbers
+	arr := make([]int, 30)
+	for i := 0; i < 30; i++ {
+		arr[i] = i
+	}
+	fmt.Println(arr)
+
+	// go printChar(ch)
+	// go printChar(ch)
+
+	// for
+}
+
+func swap(sw []int) {
+	for a, b := 0, len(sw)-1; a < b; a, b = a+1, b-1 {
+		fmt.Println(a, b)
+		sw[a], sw[b] = sw[b], sw[a]
+	}
+}
+
+func TestSwap(t *testing.T) {
+	a := []int{1, 2, 3, 4, 5}
+	swap(a)
+	t.Log(a)
 }

@@ -1,6 +1,8 @@
 package interface_test
 
-import "testing"
+import (
+	"testing"
+)
 
 type Programmer interface {
 	WriteHelloWorld() string
